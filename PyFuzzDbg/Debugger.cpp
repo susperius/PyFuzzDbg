@@ -52,6 +52,7 @@ uint32_t Debugger::start_test() {
 				ContinueDebugEvent(dbg_event.dwProcessId, dbg_event.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
 			}
 			else {
+				TerminateProcess(proc_info.hProcess, 0);
 				return exception_debug_info.ExceptionRecord.ExceptionCode;
 			}
 		}
@@ -60,6 +61,7 @@ uint32_t Debugger::start_test() {
 		}
 		running = time(0);
 	}
+	TerminateProcess(proc_info.hProcess, 0);
 	return 0;
 }
 
@@ -71,5 +73,6 @@ void Debugger::export_Debugger() {
 	using namespace boost::python;
 	class_ < Debugger >("Debugger", init<std::wstring, uint32_t>())
 		.def("start_test", &Debugger::start_test)
+		.def("set_app_name", &Debugger::set_app_name)
 		;
 }
