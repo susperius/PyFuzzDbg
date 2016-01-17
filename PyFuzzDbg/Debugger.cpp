@@ -9,20 +9,19 @@
 #define FACTOR 1
 #endif
 
-Debugger::Debugger(std::wstring application_name, std::wstring command_line, uint32_t sleep_time) {
+Debugger::Debugger(std::wstring application_name, uint32_t sleep_time) {
 	ZeroMemory(&startup_info, sizeof(startup_info));
 	ZeroMemory(&proc_info, sizeof(proc_info));
 	ZeroMemory(&dbg_event, sizeof(dbg_event));
 	//assert(application_name.size() > 1000);
 	std::copy(application_name.begin(), application_name.end(), app_name);
-	std::copy(command_line.begin(), command_line.end(), cmd_line);
 	this->sleep_time = (time_t)sleep_time;
 }
 
 bool Debugger::start_process() {
-	tcout << "Starting Process with cmd_line: " << std::endl << app_name << std::endl;
-	bool proc_creation_successfull = CreateProcess(app_name, // Module name
-		cmd_line, // command line
+	tcout << "Starting Process with app_name: " << std::endl << app_name << std::endl;
+	bool proc_creation_successfull = CreateProcess(NULL, // Module name
+		app_name, // command line
 		NULL,
 		NULL,
 		FALSE,
@@ -64,9 +63,13 @@ uint32_t Debugger::start_test() {
 	return 0;
 }
 
+void Debugger::set_app_name(std::wstring application_name) {
+	std::copy(application_name.begin(), application_name.end(), app_name);
+}
+
 void Debugger::export_Debugger() {
 	using namespace boost::python;
-	class_ < Debugger >("Debugger", init<std::wstring, std::wstring, uint32_t>())
+	class_ < Debugger >("Debugger", init<std::wstring, uint32_t>())
 		.def("start_test", &Debugger::start_test)
 		;
 }
