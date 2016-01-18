@@ -10,6 +10,8 @@
 
 #include <boost/python.hpp>
 
+#include "ProcessList.h"
+
 #define STRING_SIZE 1000
 
 class Debugger {
@@ -19,9 +21,12 @@ private:
 	DEBUG_EVENT dbg_event;
 	TCHAR app_name[STRING_SIZE];
 	time_t sleep_time;
+	ProcessList proc_list;
+
 	bool start_process();
+	void kill_all_processes();
 public:
-	Debugger(std::wstring application_name, uint32_t sleep_time);
+	Debugger(uint32_t sleep_time);
 	uint32_t Debugger::start_test();
 	void Debugger::set_app_name(std::wstring application_name);
 	

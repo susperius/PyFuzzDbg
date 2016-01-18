@@ -30,6 +30,9 @@
     <ClInclude Include="Debugger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ProcessList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -127,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_python.wrapper.cpp">
       <Filter>Boost</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessList.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
