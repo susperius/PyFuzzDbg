@@ -5,16 +5,6 @@ ProcessList::ProcessList() {
 	end_ptr = NULL;
 }
 
-ProcessList::~ProcessList() {
-	LPLIST_ITEM actual_item = start_ptr;
-	while (start_ptr->next != NULL) {
-		start_ptr = start_ptr->next;
-		delete actual_item;
-		actual_item = start_ptr;
-	}
-	delete start_ptr;
-}
-
 void ProcessList::add_item(DWORD proc_id, HANDLE proc_handle) {
 	LPLIST_ITEM entry = new LIST_ITEM();
 	entry->proc_id = proc_id;
