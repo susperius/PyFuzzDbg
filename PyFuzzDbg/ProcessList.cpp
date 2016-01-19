@@ -1,27 +1,31 @@
 #include "ProcessList.h"
 
-#ifdef UNICODE
-#define tcout std::wcout
-#define FACTOR 2
-#else
-#define tcout std::cout
-#define FACTOR 1
-#endif
-
 ProcessList::ProcessList() {
 	start_ptr = NULL;
 	end_ptr = NULL;
 }
 
+ProcessList::~ProcessList() {
+	LPLIST_ITEM actual_item = start_ptr;
+	while (start_ptr->next != NULL) {
+		start_ptr = start_ptr->next;
+		delete actual_item;
+		actual_item = start_ptr;
+	}
+	delete start_ptr;
+}
+
 void ProcessList::add_item(DWORD proc_id, HANDLE proc_handle) {
-	LIST_ITEM entry = { proc_id, proc_handle, NULL };
+	LPLIST_ITEM entry = new LIST_ITEM();
+	entry->proc_id = proc_id;
+	entry->proc_handle = proc_handle;
 	if (start_ptr == NULL) {
-		start_ptr = &entry;
-		end_ptr = &entry;
+		start_ptr = entry;
+		end_ptr = entry;
 	}
 	else {
-		end_ptr->next = &entry;
-		end_ptr = &entry;
+		end_ptr->next = entry;
+		end_ptr = entry;
 	}
 }
 
@@ -54,13 +58,11 @@ bool ProcessList::del_item(DWORD proc_id) {
 }
 
 HANDLE ProcessList::get_first_handle() {
-	tcout << "Trying to receive first process" << std::endl;
 	if (start_ptr != NULL) {
-		// producing crashes ....
 		LPLIST_ITEM item = start_ptr;
 		HANDLE return_value = item->proc_handle;
 		start_ptr = item->next;
-		//delete item;
+		delete item;
 		return return_value;
 	}
 	return NULL;

@@ -10,11 +10,10 @@ typedef struct _list_item {
 
 class ProcessList {
 private:
-	
-
 	LPLIST_ITEM start_ptr, end_ptr;
 public:
 	ProcessList();
+	~ProcessList();
 	void add_item(DWORD proc_id, HANDLE proc_handle);
 	bool del_item(DWORD proc_id);
 	HANDLE get_first_handle();

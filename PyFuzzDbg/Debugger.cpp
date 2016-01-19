@@ -18,7 +18,6 @@ Debugger::Debugger(uint32_t sleep_time) {
 }
 
 bool Debugger::start_process() {
-	tcout << "Starting Process with app_name: " << std::endl << app_name << std::endl;
 	bool proc_creation_successfull = CreateProcess(NULL, // Module name
 		app_name, // command line
 		NULL,
@@ -59,12 +58,10 @@ uint32_t Debugger::start_test() {
 			}
 		}
 		else if (dbg_event.dwDebugEventCode == EXIT_PROCESS_DEBUG_EVENT) {
-			tcout << "Removing process from proc_list" << std::endl;
 			proc_list.del_item(dbg_event.dwProcessId);
 			ContinueDebugEvent(dbg_event.dwProcessId, dbg_event.dwThreadId, DBG_CONTINUE);
 		}
 		else if (dbg_event.dwDebugEventCode == CREATE_PROCESS_DEBUG_EVENT) {
-			tcout << "Adding new Process to proc_list" << std::endl;
 			proc_list.add_item(dbg_event.dwProcessId, dbg_event.u.CreateProcessInfo.hProcess);
 			ContinueDebugEvent(dbg_event.dwProcessId, dbg_event.dwThreadId, DBG_CONTINUE);
 		}
@@ -88,13 +85,9 @@ void Debugger::set_app_name(std::wstring application_name) {
 
 
 void Debugger::kill_all_processes() {
-	tcout << "Kill all processes called!" << std::endl;
 	HANDLE proc_handle = proc_list.get_first_handle();
-	tcout << "Got first handle" << std::endl;
 	while (proc_handle != NULL) {
-		tcout << "TerminateProcess" << std::endl;
 		TerminateProcess(proc_handle, DBG_TERMINATE_PROCESS);
-		tcout << "Need next process" << std::endl;
 		proc_handle = proc_list.get_first_handle();
 	}
 }
