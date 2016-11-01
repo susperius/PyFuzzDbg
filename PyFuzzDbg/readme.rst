@@ -10,3 +10,5 @@ and the timer expired.
 I created this extension using Visual Studio 2015 and the boost-python library. 
 The project settings in the master branch are set to release. So you can import
 the project into your VS2015 and compile it.
+
+In order to use it on a node, you need to install the `Visual C++ Redistributable for Visual Studio 2015 <https://www.microsoft.com/en-us/download/details.aspx?id=48145>`__.
